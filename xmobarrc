@@ -1,0 +1,22 @@
+Config
+{
+    font = "xft:Consolas-12"
+    bgColor = "#586E75",
+    border = NoBorder,
+    borderColor = "#586E75",
+    fgColor = "#fdf6e3",
+    position = Top,
+    lowerOnStart = True,
+    commands = [
+                Run StdinReader
+                , Run Wireless "wlan0" ["-t", "wlan0: <essid>"] 10
+                , Run MultiCpu [] 10
+                , Run Memory [] 10
+                , Run Weather "KBFI" ["-t","<tempF>°F"] 3600
+                , Run Date "%a, %d %b %H:%M" "date" 10
+                , Run Battery ["-t", "Battery: <left>% / <timeleft> · AC: <acstatus>", "--", "-c","energy_full"] 10
+                ],
+    sepChar = "%",
+    alignSep = "}{",
+    template = "%StdinReader% }{ %battery% · %multicpu% · %memory% · %wlan0wi% · %KBFI% · %date% "
+}

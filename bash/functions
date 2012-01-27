@@ -1,0 +1,3 @@
+#use awk as a calculator
+
+calc(){ awk "BEGIN { print $* }" ;}
