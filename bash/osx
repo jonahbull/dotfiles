@@ -73,3 +73,23 @@ boilerplate-tmux() {
     tmux attach-session -t summon
 }
 
+#PS1
+#
+#special vars for git_ps1
+export GIT_PS1_SHOWDIRTYSTATE=true
+export GIT_PS1_SHOWSTASHSTATE=true
+export GIT_PS1_SHOWUNTRACKEDFILES=true
+
+#current PS1
+PS1='\[\e[1;34m\]\w\[\e[0m\] $(__git_ps1 "\[\e[1m\](\[\e[0m\]\[\e[33m\]%s\[\e[0m\]\[\e[1m\])")\[\e[1;31m\] \$ \[\e[0m\]'
+
+#completions
+#Use homebrew bash-completion, if available
+if [ -f `brew --prefix`/etc/bash_completion ]; then
+. `brew --prefix`/etc/bash_completion
+fi
+
+#paths
+#export PATH for Haskell
+export PATH="$HOME/Library/Haskell/bin:$PATH"
+export NODE_PATH=/usr/local/lib/node_modules

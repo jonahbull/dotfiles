@@ -66,3 +66,6 @@ ps -ef | grep ${SSH_AGENT_PID} | grep ssh-agent$ > /dev/null || {
 else
       start_agent;
 fi
+
+#PS1
+PS1="[\[\033[36;1m\]\u\[\033[37;1m\]@\[\033[33;1m\]\h:\[\033[33;1m\]\w\[\033[m\]]$ "
