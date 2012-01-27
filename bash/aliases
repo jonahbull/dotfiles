@@ -31,7 +31,7 @@ alias my="git log --pretty=format:'%h %ad | %s%d [%an]' --stat --date=short -E -
 
 
 #start a simpleHTTPServer in current dir
-alias served='python -m SimpleHTTPServer &'
+alias served='python -m SimpleHTTPServer'
 
 #misc
 alias reload='. ~/.bashrc'
