@@ -4,7 +4,7 @@
 alias ls='ls -F -G'
 alias xq='cd /opt/magnolia/Content.xquery/xquery-module/src-xml/xquery'
 alias rr='cd ~/Summon/Content.xquery.release-ready/xquery-module/src-xml/xquery/'
-alias ltd='cd ~/Summon/local-testdata'
+alias ltd='cd ~/Summon/testdata'
 alias cr='cd ~/Summon/content-release'
 
 ##Latest commit merged to release-ready with github link
@@ -48,7 +48,7 @@ if [ -z "$1" ]; then
     return 1
 fi
 pushd /opt/magnolia/Magnolia/scripts > /dev/null &&
-/opt/magnolia/Magnolia/scripts/xml-analyzer-v2.sh -p /Users/jbull/Summon/local-testdata/$1/ingestion-lite.properties -o /Users/jbull/Summon/local-testdata/$1/analyzer-out -l $1 &&
+/opt/magnolia/Magnolia/scripts/xml-analyzer-v2.sh -p /Users/jbull/Summon/testdata/$1/ingestion-lite.properties -o /Users/jbull/Summon/testdata/$1/analyzer-out -l $1 &&
 popd > /dev/null &&
 less +F /opt/magnolia/Magnolia/logs/xml-analyzer-$1.log
 }
