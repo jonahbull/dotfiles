@@ -6,6 +6,7 @@ alias xq='cd /opt/magnolia/Content.xquery/xquery-module/src-xml/xquery'
 alias rr='cd ~/Summon/Content.xquery.release-ready/xquery-module/src-xml/xquery/'
 alias ltd='cd ~/Summon/testdata'
 alias cr='cd ~/Summon/content-release'
+alias vim='mvim -v'
 
 ##Latest commit merged to release-ready with github link
 alias lastc='git log -1 --pretty=format:"Merged to release-ready as [%h|https://www.github.com/summon/Content.xquery/commit/%H]" | pbcopy'
@@ -14,7 +15,8 @@ alias gwork='git log -1 --pretty=format:"[%h|https://www.github.com/summon/REPO/
 
 ##pull latest master from all summmon repos in /opt/magnolia
 ##FIXME - what if dir is dirty?
-alias upall='pushd /opt/magnolia 1> /dev/null; for dir in */; do pushd $dir 1> /dev/null; echo "Updating $dir..." && git pull --ff-only && popd 1> /dev/null; done; popd 1> /dev/null'
+#alias upall='pushd /opt/magnolia 1> /dev/null; for dir in */; do pushd $dir 1> /dev/null; [[ -d $dir/.git ]] && echo "Updating $dir..." && git pull --ff-only && popd 1> /dev/null; done; popd 1> /dev/null'
+alias upall='while read dir; do pushd $dir 1> /dev/null; [[ -d $dir/.git ]] && { echo "Updating ${dir##*/}...."; git pull --ff-only; popd 1> /dev/null; } done < <(find /opt/magnolia -maxdepth 1 -mindepth 1 -type d ! -name "target")'
 
 ##Unload and reload vpn module on OS X
 alias unvpn='sudo launchctl unload /System/Library/LaunchDaemons/com.apple.racoon.plist'
@@ -58,38 +60,25 @@ boilerplate-tmux() {
     tmux new-session -d -s summon -n local
     tmux new-window -t summon:2 -n prod
     tmux new-window -t summon:3 -n test
-    tmux new-window -t summon:4 -n scratch
-    tmux new-window -t summon:5 -n build
+    tmux new-window -t summon:4 -n staging
+    tmux new-window -t summon:5 -n scratch
+    tmux new-window -t summon:6 -n build
+    tmux new-window -t summon:7 -n repl
 
     tmux send-keys -t summon:1 "xq; clear" C-m
     tmux split-window -v -p 50 -t summon:1
     tmux send-keys -t summon:1 "cd $MP; clear" C-m
-    tmux send-keys -t summon:4 "cr; clear" C-m
-    tmux split-window -v -p 50 -t summon:4
-    tmux split-window -h -p 50 -t summon:4
-    tmux send-keys -t summon:5 "cd /opt/magnolia; clear" C-m
+    tmux send-keys -t summon:5 "cr; clear" C-m
+    tmux send-keys -t summon:6 "cd /opt/magnolia; clear" C-m
+    tmux split-window -v -p 30 -t summon:7
+    tmux send-keys -t summon:7 "python" C-m
 
     tmux select-window -t summon:1
     tmux attach-session -t summon
 }
 
-#PS1
-#
-#special vars for git_ps1
-export GIT_PS1_SHOWDIRTYSTATE=true
-export GIT_PS1_SHOWSTASHSTATE=true
-export GIT_PS1_SHOWUNTRACKEDFILES=true
-
-#current PS1
-PS1='\[\e[1;34m\]\w\[\e[0m\] $(__git_ps1 "\[\e[1m\](\[\e[0m\]\[\e[33m\]%s\[\e[0m\]\[\e[1m\])")\[\e[1;31m\] \$ \[\e[0m\]'
-
-#completions
-#Use homebrew bash-completion, if available
-if [ -f `brew --prefix`/etc/bash_completion ]; then
-. `brew --prefix`/etc/bash_completion
-fi
-
-#paths
-#export PATH for Haskell
-export PATH="$HOME/Library/Haskell/bin:$PATH"
-export NODE_PATH=/usr/local/lib/node_modules
+# output MARC8 characters for a given hex code
+marc8lookup() {
+xpath="/codeTables/codeTable/characterSet/code[marc=\"$1\"]/name"
+xml sel -t -m "$xpath" -v '.' -n /Users/jbull/Desktop/sort/codetables.xml | sed '$d' | sort -u
+}

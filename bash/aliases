@@ -29,7 +29,6 @@ alias gcpx='git cherry-pick -x'
 #show only my commits
 alias my="git log --pretty=format:'%h %ad | %s%d [%an]' --stat --date=short -E --committer='Jonah Bull'"
 
-
 #start a simpleHTTPServer in current dir
 alias served='python -m SimpleHTTPServer'
 
