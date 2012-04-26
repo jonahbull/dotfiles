@@ -7,6 +7,9 @@ set nocompatible " no compatibility with legacy vi
 " it's 2012 folks
 set encoding=utf-8
 
+" easiest for interacting with system clipboard
+set clipboard=unnamed
+
 " basics
 set number " line numbers
 set ruler " show cursor position all the time
@@ -15,7 +18,7 @@ set ruler " show cursor position all the time
 set background=light
 if has('gui_running')
     set background=dark
-    set guifont=Consolas:h12
+    set guifont=Droid\ Sans\ Mono\ Slashed:h12"
     set go-=T
 endif
 let g:solarized_visbility="low"
@@ -40,7 +43,7 @@ set directory=~/.vim/swp/
 " tabs and indenting
 set tabstop=4 " a tab is 4 spaces
 set shiftwidth=4 " an indent is 4 spaces
-"set smarttab " don't need this?
+set smarttab " don't need this?
 set softtabstop=4
 set expandtab " use spaces, not tabs
 set autoindent " copy indent from current line
