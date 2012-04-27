@@ -1,6 +1,6 @@
 Config
 {
-    font = "xft:Consolas-12"
+    font = "xft:droid sans mono slashed-12"
     bgColor = "#586E75",
     border = NoBorder,
     borderColor = "#586E75",
