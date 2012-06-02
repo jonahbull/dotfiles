@@ -17,12 +17,6 @@ set -o vi
 export EDITOR=vim
 export VISUAL=vim
 
-#export Magnolia Home for local build
-export MAGNOLIA_HOME=/opt/magnolia/Magnolia
-export MP=/opt/magnolia/Magnolia/scripts
-export JAVA_HOME=/Library/Java/Home
-export ASSUMED_ENV=jonah
-
 #colored man pages!
 export LESS_TERMCAP_mb=$'\E[01;31m'
 export LESS_TERMCAP_md=$'\E[01;31m'

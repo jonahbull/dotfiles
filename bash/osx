@@ -2,11 +2,8 @@
 
 #aliases
 alias ls='ls -F -G'
-alias xq='cd /opt/magnolia/Content.xquery/xquery-module/src-xml/xquery'
-alias rr='cd ~/Summon/Content.xquery.release-ready/xquery-module/src-xml/xquery/'
-alias ltd='cd ~/Summon/testdata'
-alias cr='cd ~/Summon/content-release'
-alias vim='mvim -v'
+alias xq='cd /Users/jonah/Work/Summon/Content.xquery/xquery-module/src-xml/xquery'
+alias td='cd /Users/jonah/Work/Summon/testdata'
 
 ##Latest commit merged to release-ready with github link
 alias lastc='git log -1 --pretty=format:"Merged to release-ready as [%h|https://www.github.com/summon/Content.xquery/commit/%H]" | pbcopy'
@@ -28,8 +25,8 @@ alias pw="export LANG=C;tr -dc 'A-Za-z0-9!@#$%^&*' < /dev/random | fold -w 12 | 
 #config
 
 #export Magnolia Home for local build
-export MAGNOLIA_HOME=/opt/magnolia/Magnolia
-export MP=/opt/magnolia/Magnolia/scripts
+export MAGNOLIA_HOME=/Users/jonah/Work/Summon
+export MP=$MAGNOLIA_HOME/Magnolia/scripts
 export JAVA_HOME=/Library/Java/Home
 export ASSUMED_ENV=jonah
 
