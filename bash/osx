@@ -1,43 +1,40 @@
 #OS-X specific
 
+#Work-related paths
+export MAGNOLIA_HOME=/Users/jonah/Work/Summon
+export MP=$MAGNOLIA_HOME/Magnolia/scripts
+export JAVA_HOME=/Library/Java/Home
+export ASSUMED_ENV=jonah
+
 #aliases
 alias ls='ls -F -G'
-alias xq='cd /Users/jonah/Work/Summon/Content.xquery/xquery-module/src-xml/xquery'
-alias td='cd /Users/jonah/Work/Summon/testdata'
+alias xq='cd $MAGNOLIA_HOME/Content.xquery/xquery-module/src-xml/xquery'
+alias td="cd $MAGNOLIA_HOME/testdata"
 
-##Latest commit merged to release-ready with github link
+#Latest commit merged to release-ready with github link
 alias lastc='git log -1 --pretty=format:"Merged to release-ready as [%h|https://www.github.com/summon/Content.xquery/commit/%H]" | pbcopy'
-##Latest commit on any summon repo with github link
-alias gwork='git log -1 --pretty=format:"[%h|https://www.github.com/summon/REPO/commit/%H] -- %s" | sed "s?REPO?$(pwd | cut -d"/" -f4)?" | pbcopy'
 
-##pull latest master from all summmon repos in /opt/magnolia
-##FIXME - what if dir is dirty?
-#alias upall='pushd /opt/magnolia 1> /dev/null; for dir in */; do pushd $dir 1> /dev/null; [[ -d $dir/.git ]] && echo "Updating $dir..." && git pull --ff-only && popd 1> /dev/null; done; popd 1> /dev/null'
-alias upall='while read dir; do pushd $dir 1> /dev/null; [[ -d $dir/.git ]] && { echo "Updating ${dir##*/}...."; git pull --ff-only; popd 1> /dev/null; } done < <(find /opt/magnolia -maxdepth 1 -mindepth 1 -type d ! -name "target")'
+#Latest commit on any summon repo with github link
+alias gwork='git log -1 --pretty=format:"[%h|https://www.github.com/summon/REPO/commit/%H] -- %s" | sed "s?REPO?$(pwd | cut -d"/" -f6)?" | pbcopy'
 
-##Unload and reload vpn module on OS X
+#Unload and reload vpn module on OS X
 alias unvpn='sudo launchctl unload /System/Library/LaunchDaemons/com.apple.racoon.plist'
 alias revpn='sudo launchctl load /System/Library/LaunchDaemons/com.apple.racoon.plist'
 
 ##generate a password (OS X specific)
 alias pw="export LANG=C;tr -dc 'A-Za-z0-9!@#$%^&*' < /dev/random | fold -w 12 | head -n 1"
 
-#config
-
-#export Magnolia Home for local build
-export MAGNOLIA_HOME=/Users/jonah/Work/Summon
-export MP=$MAGNOLIA_HOME/Magnolia/scripts
-export JAVA_HOME=/Library/Java/Home
-export ASSUMED_ENV=jonah
+#pull latest from all summmon repos in $MAGNOLIA_HOME
+function upall() {
+while read dir; do
+    pushd $dir 1> /dev/null
+    [[ -d $dir/.git ]] && { echo "Updating ${dir##*/}..." ; gpff ; popd 1> /dev/null; } || popd 1> /dev/null
+done < <(find $MAGNOLIA_HOME -maxdepth 1 -mindepth 1 -type d ! -name "target")
+}
 
 #wrapper for diffing two files from xquery repo
 function gdiff() {
 git diff release-ready:xquery-module/src-xml/$1 master:xquery-module/src-xml/$1
-}
-
-#format skynet release list output as a jira table, copy to clipboard
-function skyform {
-awk -F"\t" '{ print "|",$1,"|", $2, "|", $3,"|", $6,"|" }' $1 | sed "1s/|/||/g" | grep -Ev "^[ |]+$" | pbcopy
 }
 
 #run ingestion lite more ez-ily
@@ -46,19 +43,19 @@ if [ -z "$1" ]; then
     echo "Usage: ezxa name-of-directory-you-are-processing"
     return 1
 fi
-pushd /opt/magnolia/Magnolia/scripts > /dev/null &&
-/opt/magnolia/Magnolia/scripts/xml-analyzer-v2.sh -p /Users/jbull/Summon/testdata/$1/ingestion-lite.properties -o /Users/jbull/Summon/testdata/$1/analyzer-out -l $1 &&
+pushd $MP > /dev/null &&
+$MP/xml-analyzer-v2.sh -p $MAGNOLIA_HOME/testdata/$1/ingestion-lite.properties -o $MAGNOLIA_HOME/testdata/$1/analyzer-out -l $1 &&
 popd > /dev/null &&
-less +F /opt/magnolia/Magnolia/logs/xml-analyzer-$1.log
+less +F $MAGNOLIA_HOME/logs/xml-analyzer-$1.log
 }
 
-boilerplate-tmux() {
+summon-tmux() {
     tmux start-server
-    tmux new-session -d -s summon -n local
+    tmux new-session -d -s summon -n xquery
     tmux new-window -t summon:2 -n prod
     tmux new-window -t summon:3 -n test
     tmux new-window -t summon:4 -n staging
-    tmux new-window -t summon:5 -n scratch
+    tmux new-window -t summon:5 -n docs
     tmux new-window -t summon:6 -n build
     tmux new-window -t summon:7 -n repl
 
@@ -66,16 +63,10 @@ boilerplate-tmux() {
     tmux split-window -v -p 50 -t summon:1
     tmux send-keys -t summon:1 "cd $MP; clear" C-m
     tmux send-keys -t summon:5 "cr; clear" C-m
-    tmux send-keys -t summon:6 "cd /opt/magnolia; clear" C-m
+    tmux send-keys -t summon:6 "cd $MAGNOLIA_HOME; clear" C-m
     tmux split-window -v -p 30 -t summon:7
-    tmux send-keys -t summon:7 "ipython" C-m
+    tmux send-keys -t summon:7 "python" C-m
 
     tmux select-window -t summon:1
     tmux attach-session -t summon
-}
-
-# output MARC8 characters for a given hex code
-marc8lookup() {
-xpath="/codeTables/codeTable/characterSet/code[marc=\"$1\"]/name"
-xml sel -t -m "$xpath" -v '.' -n /Users/jbull/Desktop/sort/codetables.xml | sed '$d' | sort -u
 }
