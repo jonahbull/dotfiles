@@ -1,5 +1,8 @@
 #OS-X specific
 
+#Path shenanigans for texlive
+export PATH=/usr/local/bin:/usr/local/texlive/2011basic/bin/universal-darwin:$PATH
+
 #Work-related paths
 export MAGNOLIA_HOME=/Users/jonah/Work/Summon
 export MP=$MAGNOLIA_HOME/Magnolia/scripts
@@ -10,6 +13,7 @@ export ASSUMED_ENV=jonah
 alias ls='ls -F -G'
 alias xq='cd $MAGNOLIA_HOME/Content.xquery/xquery-module/src-xml/xquery'
 alias td="cd $MAGNOLIA_HOME/testdata"
+alias vim='mvim -v'
 
 #Latest commit merged to release-ready with github link
 alias lastc='git log -1 --pretty=format:"Merged to release-ready as [%h|https://www.github.com/summon/Content.xquery/commit/%H]" | pbcopy'
@@ -30,11 +34,13 @@ while read dir; do
     pushd $dir 1> /dev/null
     [[ -d $dir/.git ]] && { echo "Updating ${dir##*/}..." ; gpff ; popd 1> /dev/null; } || popd 1> /dev/null
 done < <(find $MAGNOLIA_HOME -maxdepth 1 -mindepth 1 -type d ! -name "target")
+#less readable
+#find $MAGNOLIA_HOME -maxdepth 1 -mindepth 1 -type d ! -name "target" | while read dir; do pushd $dir 1> /dev/null; [[ -d $dir/.git ]] && { echo "Updating ${dir##*/}..." ; gpff ; popd 1> /dev/null; } || popd 1> /dev/null; done↵
 }
 
 #wrapper for diffing two files from xquery repo
 function gdiff() {
-git diff release-ready:xquery-module/src-xml/$1 master:xquery-module/src-xml/$1
+git diff release-ready -- "$1" master -- "$1"
 }
 
 #run ingestion lite more ez-ily
@@ -43,10 +49,12 @@ if [ -z "$1" ]; then
     echo "Usage: ezxa name-of-directory-you-are-processing"
     return 1
 fi
+
+logname=${1##*/}
 pushd $MP > /dev/null &&
-$MP/xml-analyzer-v2.sh -p $MAGNOLIA_HOME/testdata/$1/ingestion-lite.properties -o $MAGNOLIA_HOME/testdata/$1/analyzer-out -l $1 &&
+./xml-analyzer-v2.sh -p $MAGNOLIA_HOME/testdata/${logname}/ingestion-lite.properties -o $MAGNOLIA_HOME/testdata/${logname}/analyzer-out -l ${logname} &&
 popd > /dev/null &&
-less +F $MAGNOLIA_HOME/logs/xml-analyzer-$1.log
+less +F $MAGNOLIA_HOME/Magnolia/logs/xml-analyzer-${logname}.log
 }
 
 summon-tmux() {
@@ -65,7 +73,7 @@ summon-tmux() {
     tmux send-keys -t summon:5 "cr; clear" C-m
     tmux send-keys -t summon:6 "cd $MAGNOLIA_HOME; clear" C-m
     tmux split-window -v -p 30 -t summon:7
-    tmux send-keys -t summon:7 "python" C-m
+    tmux send-keys -t summon:7 "ipython" C-m
 
     tmux select-window -t summon:1
     tmux attach-session -t summon
