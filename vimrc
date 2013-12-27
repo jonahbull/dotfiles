@@ -4,8 +4,6 @@ filetype plugin indent on " load file type plugins + indentation
 set modelines=0 " prevent some security exploits w/modelines
 set nocompatible " no compatibility with legacy vi
 
-" plugins to check out: matchit, surround
-
 " directory changes depending on what file you're working with
 set autochdir
 
@@ -27,10 +25,8 @@ if has('gui_running')
     set go-=T
     set go-=r
 endif
-let g:solarized_visbility="low"
-let g:solarized_termtrans = 1
 colorscheme solarized
-set t_Co=256
+let g:solarized_visibility="low"
 
 set showmode " show what mode we're in
 set showcmd " display incomplete commands
@@ -44,9 +40,9 @@ set splitright " open vertical split to the right
 
 " statusline
 set ls=2 " always show the status bar
-" set statusline=%F\ %m%r%w%y\ %{fugitive#statusline()}\ %=(%L\ loc)\ [#\%03.3b\ 0x\%02.2B]\ \ %l,%v\ \ %P
-set rtp+=/Users/jonah/Library/Python/2.7/lib/python/site-packages/powerline/bindings/vim
-"let g:Powerline_symbols = 'fancy'
+set statusline=%F\ %m%r%w%y\ %{fugitive#statusline()}\ %=(%L\ loc)\ [#\%03.3b\ 0x\%02.2B]\ \ %l,%v\ \ %P
+let g:airline_powerline_fonts = 1
+"let g:airline#extensions#whitespace#enabled = 0
 
 " backups
 set nobackup " don't make backup files
@@ -69,11 +65,11 @@ set ignorecase " searches are case insensitive...
 set smartcase " ... unless they contain at least one capital letter
 
 " simply hit enter to clear highlighting after a search
-nnoremap <silent> <CR> :noh<CR> 
+nnoremap <silent> <CR> :noh<CR>
 
 " show them listchars
 set list
-set listchars=nbsp:·,eol:↵,extends:>,precedes:<,tab:\|\ 
+set listchars=nbsp:·,eol:↵,extends:>,precedes:<,tab:\|\
 
 " enable synatx highlighting
 syntax enable
@@ -86,7 +82,7 @@ autocmd QuickFixCmdPost *grep* cwindow
 " borrowed from pbrisbin
 " * <F1> to re-format the current paragraph correctly
 " * <F2> to format a line which is too long, and go to the next line
-" * <F3> to merge the previous line with the current one, with 
+" * <F3> to merge the previous line with the current one, with
 "  correct formatting (sometimes useful associated with <F2>)
 
 " reformat paragraphs
@@ -99,25 +95,3 @@ map!    <F3>    <ESC>kgqji
 
 " toggle paste for pasting code from browser, etc.
 set pastetoggle=<F4>
-
-" http://ku1ik.com/2011/09/08/formatting-xml-in-vim-with-indent-command.html
-" gg=G command. = is used to auto-indent selected line(s) and gg=G re-indents
-" whole file.
-au FileType xml setlocal equalprg=xmllint\ --format\ --recover\ -\ 2>/dev/null
-
-" vim-latex stuff
-
-" IMPORTANT: grep will sometimes skip displaying the file name if you
-" search in a singe file. This will confuse Latex-Suite. Set your grep
-" program to always generate a file-name.
-set grepprg=grep\ -nH\ $*
-
-" 'plaintex' instead of 'tex', which results in vim-latex not being loaded.
-" The following changes the default filetype back to 'tex':
-let g:tex_flavor='latex'
-
-" vim-latex compilation stuff
-" pdf as target for latex
-let g:Tex_DefaultTargetFormat = 'pdf'
-let g:Tex_CompileRule_pdf = 'pdflatex -interaction nonstopmode'
-let g:Tex_ViewRule_pdf = 'zathura'
