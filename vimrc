@@ -1,3 +1,4 @@
+runtime bundle/vim-pathogen/autoload/pathogen.vim
 call pathogen#infect()
 filetype plugin indent on " load file type plugins + indentation
 
