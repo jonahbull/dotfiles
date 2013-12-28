@@ -5,4 +5,4 @@ Featuring:
 * vim
 * tmux
 * bash
-* xmonad
+* spectrwm
