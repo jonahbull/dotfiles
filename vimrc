@@ -8,7 +8,7 @@ set nocompatible " no compatibility with legacy vi
 " directory changes depending on what file you're working with
 set autochdir
 
-" it's 2012 folks
+" all utf-8 all the time
 set encoding=utf-8
 
 " easiest for interacting with system clipboard
@@ -20,12 +20,6 @@ set ruler " show cursor position all the time
 
 " colors
 set background=light
-if has('gui_running')
-    set background=dark
-    set guifont=Droid\ Sans\ Mono\ Slashed\ for\ Powerline:h12"
-    set go-=T
-    set go-=r
-endif
 colorscheme solarized
 let g:solarized_visibility="low"
 
@@ -42,8 +36,6 @@ set splitright " open vertical split to the right
 " statusline
 set ls=2 " always show the status bar
 set statusline=%F\ %m%r%w%y\ %{fugitive#statusline()}\ %=(%L\ loc)\ [#\%03.3b\ 0x\%02.2B]\ \ %l,%v\ \ %P
-let g:airline_powerline_fonts = 1
-"let g:airline#extensions#whitespace#enabled = 0
 
 " backups
 set nobackup " don't make backup files
