@@ -36,6 +36,7 @@ set splitright " open vertical split to the right
 " statusline
 set ls=2 " always show the status bar
 set statusline=%F\ %m%r%w%y\ %{fugitive#statusline()}\ %=(%L\ loc)\ [#\%03.3b\ 0x\%02.2B]\ \ %l,%v\ \ %P
+let g:airline_powerline_fonts = 1
 
 " backups
 set nobackup " don't make backup files
