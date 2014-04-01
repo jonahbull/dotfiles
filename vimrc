@@ -1,9 +1,24 @@
-runtime bundle/vim-pathogen/autoload/pathogen.vim
-call pathogen#infect()
-filetype plugin indent on " load file type plugins + indentation
+" no compatibility with legacy vi
+set nocompatible
 
+" Required for vundle
+filetype off
+set rtp+=~/.vim/bundle/vundle/
+call vundle#rc()
+
+" let Vundle manage Vundle, required
+Plugin 'gmarik/vundle'
+
+Plugin 'scrooloose/syntastic'
+Plugin 'bling/vim-airline'
+Plugin 'altercation/vim-colors-solarized'
+Plugin 'tpope/vim-fugitive'
+Plugin 'vim-pandoc/vim-pandoc'
+Plugin 'tpope/vim-repeat'
+Plugin 'tpope/vim-surround'
+
+filetype plugin indent on " load file type plugins + indentation
 set modelines=0 " prevent some security exploits w/modelines
-set nocompatible " no compatibility with legacy vi
 
 " directory changes depending on what file you're working with
 set autochdir
