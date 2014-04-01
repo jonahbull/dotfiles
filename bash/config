@@ -32,4 +32,9 @@ export GIT_PS1_SHOWSTASHSTATE=1
 export GIT_PS1_SHOWUNTRACKEDFILES=1
 export GIT_PS1_SHOWCOLORHINTS=true
 export GIT_PS1_SHOWUPSTREAM=auto
-PROMPT_COMMAND="__git_ps1 '\[\e[1;34m\]\u\[\e[0m\] at \[\e[1;36m\]\h\[\e[0m\] in \[\e[1;33m\]\w\[\e[0m\]' '\n\[\e[1;31m\]\\$\[\e[0m\] ' ' on \[\e[1;31m\]%s '"
+PROMPT_COMMAND='__git_ps1 "${VIRTUAL_ENV:+[\[\e[35m\]$(basename $VIRTUAL_ENV)\[\e[0m\]] }\[\e[34m\]\u\[\e[0m\] at \[\e[36m\]\h\[\e[0m\] in \[\e[33m\]\w\[\e[0m\]" "\n\[\e[31m\]\\$\[\e[0m\] " " on %s "'
+
+# virtualenvwrapper config
+export WORKON_HOME=$HOME/.virtualenvs
+export PROJECT_HOME=$HOME/Work/Catalyst
+source /usr/local/bin/virtualenvwrapper.sh

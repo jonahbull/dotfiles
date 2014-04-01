@@ -1,80 +1,8 @@
 #OS-X specific
 
-#Path shenanigans for texlive
-export PATH=/usr/local/bin:/usr/local/texlive/2011basic/bin/universal-darwin:$PATH
-
-#Work-related paths
-export MAGNOLIA_HOME=/Users/jonah/Work/Summon
-export MP=$MAGNOLIA_HOME/Magnolia/scripts
-export JAVA_HOME=/Library/Java/Home
-export ASSUMED_ENV=jonah
-
 #aliases
 alias ls='ls -F -G'
-alias xq='cd $MAGNOLIA_HOME/Content.xquery/xquery-module/src-xml/xquery'
-alias td="cd $MAGNOLIA_HOME/testdata"
 alias vim='mvim -v'
 
-#Latest commit merged to release-ready with github link
-alias lastc='git log -1 --pretty=format:"Merged to release-ready as [%h|https://www.github.com/summon/Content.xquery/commit/%H]" | pbcopy'
-
-#Latest commit on any summon repo with github link
-alias gwork='git log -1 --pretty=format:"[%h|https://www.github.com/summon/REPO/commit/%H] -- %s" | sed "s?REPO?$(pwd | cut -d"/" -f6)?" | pbcopy'
-
-#Unload and reload vpn module on OS X
-alias unvpn='sudo launchctl unload /System/Library/LaunchDaemons/com.apple.racoon.plist'
-alias revpn='sudo launchctl load /System/Library/LaunchDaemons/com.apple.racoon.plist'
-
-##generate a password (OS X specific)
-alias pw="export LANG=C;tr -dc 'A-Za-z0-9!@#$%^&*' < /dev/random | fold -w 12 | head -n 1"
-
-#pull latest from all summmon repos in $MAGNOLIA_HOME
-function upall() {
-while read dir; do
-    pushd $dir 1> /dev/null
-    [[ -d $dir/.git ]] && { echo "Updating ${dir##*/}..." ; gpff ; popd 1> /dev/null; } || popd 1> /dev/null
-done < <(find $MAGNOLIA_HOME -maxdepth 1 -mindepth 1 -type d ! -name "target")
-#less readable
-#find $MAGNOLIA_HOME -maxdepth 1 -mindepth 1 -type d ! -name "target" | while read dir; do pushd $dir 1> /dev/null; [[ -d $dir/.git ]] && { echo "Updating ${dir##*/}..." ; gpff ; popd 1> /dev/null; } || popd 1> /dev/null; done↵
-}
-
-#wrapper for diffing two files from xquery repo
-function gdiff() {
-git diff release-ready -- "$1" master -- "$1"
-}
-
-#run ingestion lite more ez-ily
-function ezxa {
-if [ -z "$1" ]; then
-    echo "Usage: ezxa name-of-directory-you-are-processing"
-    return 1
-fi
-
-logname=${1##*/}
-pushd $MP > /dev/null &&
-./xml-analyzer-v2.sh -p $MAGNOLIA_HOME/testdata/${logname}/ingestion-lite.properties -o $MAGNOLIA_HOME/testdata/${logname}/analyzer-out -l ${logname} &&
-popd > /dev/null &&
-less +F $MAGNOLIA_HOME/Magnolia/logs/xml-analyzer-${logname}.log
-}
-
-summon-tmux() {
-    tmux start-server
-    tmux new-session -d -s summon -n xquery
-    tmux new-window -t summon:2 -n prod
-    tmux new-window -t summon:3 -n test
-    tmux new-window -t summon:4 -n staging
-    tmux new-window -t summon:5 -n docs
-    tmux new-window -t summon:6 -n build
-    tmux new-window -t summon:7 -n repl
-
-    tmux send-keys -t summon:1 "xq; clear" C-m
-    tmux split-window -v -p 50 -t summon:1
-    tmux send-keys -t summon:1 "cd $MP; clear" C-m
-    tmux send-keys -t summon:5 "cr; clear" C-m
-    tmux send-keys -t summon:6 "cd $MAGNOLIA_HOME; clear" C-m
-    tmux split-window -v -p 30 -t summon:7
-    tmux send-keys -t summon:7 "ipython" C-m
-
-    tmux select-window -t summon:1
-    tmux attach-session -t summon
-}
+#Latest svn commit with viewcv link
+alias lastc='echo "http://source.caseshare.com/viewvc?view=revision&root=svn&revision=$(git svn log -1 --oneline | cut -d" " -f1)" | pbcopy'

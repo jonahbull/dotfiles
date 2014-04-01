@@ -2,7 +2,6 @@
 source $HOME/.bash/aliases
 source $HOME/.bash/config
 source $HOME/.bash/completions
-source $HOME/.bash/functions
 
 #OS-specific
 os=$(uname)
