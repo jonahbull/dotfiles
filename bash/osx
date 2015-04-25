@@ -3,6 +3,6 @@
 #aliases
 alias ls='ls -F -G'
 alias vim='mvim -v'
-
-#Latest svn commit with viewcv link
-alias lastc='echo "http://source.caseshare.com/viewvc?view=revision&root=svn&revision=$(git svn log -1 --oneline | cut -d" " -f1)" | pbcopy'
+alias stop_mpd='launchctl unload ~/Library/LaunchAgents/org.jbull.mpd.plist'
+alias start_mpd='launchctl load ~/Library/LaunchAgents/org.jbull.mpd.plist'
+alias restart_mpd='launchctl unload ~/Library/LaunchAgents/org.jbull.mpd.plist && launchctl load ~/Library/LaunchAgents/org.jbull.mpd.plist'

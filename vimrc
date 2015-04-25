@@ -9,16 +9,28 @@ call vundle#rc()
 " let Vundle manage Vundle, required
 Plugin 'gmarik/vundle'
 
-Plugin 'scrooloose/syntastic'
-Plugin 'bling/vim-airline'
 Plugin 'altercation/vim-colors-solarized'
+Plugin 'scrooloose/syntastic'
 Plugin 'tpope/vim-fugitive'
-Plugin 'vim-pandoc/vim-pandoc'
+Plugin 'tpope/vim-git'
+Plugin 'tpope/vim-markdown'
 Plugin 'tpope/vim-repeat'
 Plugin 'tpope/vim-surround'
+Plugin 'rking/ag.vim'
+Plugin 'reedes/vim-pencil'
+Plugin 'reedes/vim-colors-pencil'
+Plugin 'itchyny/lightline.vim'
 
 filetype plugin indent on " load file type plugins + indentation
 set modelines=0 " prevent some security exploits w/modelines
+
+let g:lightline = {
+      \ 'colorscheme': 'solarized_light',
+      \ }
+
+" Use flake8
+let g:syntastic_python_checkers = ['flake8']
+let g:syntastic_python_flake8_args = '--ignore="E126,E127,E128,E501,W391"'
 
 " directory changes depending on what file you're working with
 set autochdir
@@ -51,7 +63,6 @@ set splitright " open vertical split to the right
 " statusline
 set ls=2 " always show the status bar
 set statusline=%F\ %m%r%w%y\ %{fugitive#statusline()}\ %=(%L\ loc)\ [#\%03.3b\ 0x\%02.2B]\ \ %l,%v\ \ %P
-let g:airline_powerline_fonts = 1
 
 " backups
 set nobackup " don't make backup files
@@ -80,27 +91,6 @@ nnoremap <silent> <CR> :noh<CR>
 set list
 set listchars=nbsp:·,eol:↵,extends:>,precedes:<,tab:\|\
 
-" enable synatx highlighting
+" enable syntax highlighting
 syntax enable
 syntax on
-
-" automatically open quickfix window after grep
-" doesn't seem to work though?
-autocmd QuickFixCmdPost *grep* cwindow
-
-" borrowed from pbrisbin
-" * <F1> to re-format the current paragraph correctly
-" * <F2> to format a line which is too long, and go to the next line
-" * <F3> to merge the previous line with the current one, with
-"  correct formatting (sometimes useful associated with <F2>)
-
-" reformat paragraphs
-nmap    <F1>    gqap
-nmap    <F2>    gqqj
-nmap    <F3>    kgqj
-map!    <F1>    <ESC>gqapi
-map!    <F2>    <ESC>gqqji
-map!    <F3>    <ESC>kgqji
-
-" toggle paste for pasting code from browser, etc.
-set pastetoggle=<F4>

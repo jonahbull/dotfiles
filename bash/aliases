@@ -7,9 +7,6 @@ export GREP_COLOR=32
 alias grep='grep --color'
 alias egrep='egrep --color'
 
-# open todo.txt in vim
-alias todo='vim ~/Dropbox/todo/todo.txt'
-
 #aliases for standard git commands
 alias gl="git log --pretty=format:'%h %ad | %s%d [%an]' --stat --date=short -E"
 alias gs='git status'
@@ -27,7 +24,7 @@ alias gcpn='git cherry-pick -n'
 alias gcpx='git cherry-pick -x'
 
 #show only my commits
-alias my="git log --pretty=format:'%h %ad | %s%d [%an]' --stat --date=short -E --committer='Jonah Bull'"
+alias my="git log --pretty=format:'%h %ad | %s%d [%an]' --stat --date=short -E --committer='jbull'"
 
 #start a simpleHTTPServer in current dir
 alias served='python -m SimpleHTTPServer'

@@ -8,6 +8,7 @@ os=$(uname)
 case "${os}" in
     Darwin)
         source $HOME/.bash/osx
+        source $HOME/.bash/catalyst
         ;;
     Linux)
         source $HOME/.bash/linux
