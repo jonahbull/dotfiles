@@ -11,15 +11,11 @@ Plugin 'gmarik/vundle'
 
 Plugin 'altercation/vim-colors-solarized'
 Plugin 'scrooloose/syntastic'
-Plugin 'tpope/vim-fugitive'
-Plugin 'tpope/vim-git'
 Plugin 'tpope/vim-markdown'
 Plugin 'tpope/vim-repeat'
 Plugin 'tpope/vim-surround'
-Plugin 'rking/ag.vim'
-Plugin 'reedes/vim-pencil'
-Plugin 'reedes/vim-colors-pencil'
 Plugin 'itchyny/lightline.vim'
+Plugin 'tpope/vim-fireplace'
 
 filetype plugin indent on " load file type plugins + indentation
 set modelines=0 " prevent some security exploits w/modelines
