@@ -21,7 +21,7 @@ filetype plugin indent on " load file type plugins + indentation
 set modelines=0 " prevent some security exploits w/modelines
 
 let g:lightline = {
-      \ 'colorscheme': 'solarized_light',
+      \ 'colorscheme': 'solarized',
       \ }
 
 " Use flake8
