@@ -3,19 +3,25 @@ set nocompatible
 
 " Required for vundle
 filetype off
-set rtp+=~/.vim/bundle/vundle/
+" Enable fzf
+set rtp+=/usr/local/opt/fzf
+set rtp+=~/.vim/bundle/Vundle.vim/
 call vundle#rc()
 
 " let Vundle manage Vundle, required
 Plugin 'gmarik/vundle'
 
 Plugin 'altercation/vim-colors-solarized'
-Plugin 'scrooloose/syntastic'
-Plugin 'tpope/vim-markdown'
+Plugin 'w0rp/ale'
+Plugin 'itchyny/lightline.vim'
+Plugin 'maximbaz/lightline-ale'
 Plugin 'tpope/vim-repeat'
 Plugin 'tpope/vim-surround'
-Plugin 'itchyny/lightline.vim'
-Plugin 'tpope/vim-fireplace'
+Plugin 'tpope/vim-fugitive'
+Plugin 'junegunn/fzf.vim'
+Plugin 'sheerun/vim-polyglot'
+Plugin 'tpope/vim-commentary'
+Plugin 'psf/black'
 
 filetype plugin indent on " load file type plugins + indentation
 set modelines=0 " prevent some security exploits w/modelines
@@ -24,9 +30,25 @@ let g:lightline = {
       \ 'colorscheme': 'solarized',
       \ }
 
-" Use flake8
-let g:syntastic_python_checkers = ['flake8']
-let g:syntastic_python_flake8_args = '--ignore="E126,E127,E128,E501,W391"'
+let g:lightline.component_expand = {
+      \  'linter_checking': 'lightline#ale#checking',
+      \  'linter_warnings': 'lightline#ale#warnings',
+      \  'linter_errors': 'lightline#ale#errors',
+      \  'linter_ok': 'lightline#ale#ok',
+      \ }
+
+let g:lightline.component_type = {
+      \     'linter_checking': 'left',
+      \     'linter_warnings': 'warning',
+      \     'linter_errors': 'error',
+      \     'linter_ok': 'left',
+      \ }
+
+let g:lightline.active = { 'right': [['lineinfo', 'percent', 'fileformat', 'fileencoding', 'filetype', 'linter_ok', 'linter_checking', 'linter_errors', 'linter_warnings']] }
+
+"let g:ale_python_flake8_executable = 'python3'
+let g:ale_python_flake8_options = '--ignore="W391" --max-line-length=88'
+let g:ale_yaml_yamllint_options = '{extends: default,rules: {line-length: disable, indentation: {indent-sequences: consistent}}}'
 
 " directory changes depending on what file you're working with
 set autochdir
@@ -82,6 +104,9 @@ set smartcase " ... unless they contain at least one capital letter
 
 " simply hit enter to clear highlighting after a search
 nnoremap <silent> <CR> :noh<CR>
+
+" Ctrl+P fuzzy file finding
+noremap <C-p> :Files<Cr>
 
 " show them listchars
 set list
