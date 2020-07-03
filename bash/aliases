@@ -1,4 +1,4 @@
-#ls aliases
+# ls aliases
 alias ll='ls -lh'
 alias la='ls -a'
 
@@ -10,9 +10,12 @@ export GREP_COLOR=32
 alias grep='grep --color'
 alias egrep='egrep --color'
 
-#aliases for standard git commands
-alias gl="git log --pretty=format:'%h %ad | %s%d [%an]' --stat --date=short -E"
-alias gs='git status'
-alias gds='git diff --staged'
-alias gpff='git pull --ff-only'
+# aliases for standard git commands
 alias gco='git checkout'
+alias gds='git diff --staged'
+alias gl="git log --pretty=format:'%h %ad | %s%d [%an]' --stat --date=short -E"
+alias gpff='git pull --ff-only'
+alias gs='git status'
+
+# show only my commits
+alias my="git log --pretty=format:'%h %ad | %s%d [%an]' --stat --date=short -E --committer='Jonah Bull'"

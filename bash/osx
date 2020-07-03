@@ -1,6 +1,21 @@
 #OS-X specific
 
-#aliases
+# MacOS Sierra forgets saved keys between reboots.
+# Arguably a feature and not a bug.
+# Wait to see if I actually need this.
+ssh-add -A > /dev/null 2>&1
+
+# aliases
 alias ls='ls -F -G'
 alias vim='mvim -v'
 alias reload='. ~/.profile'
+
+# completion
+
+## fzf completion
+[ -f ~/.fzf.bash ] && source ~/.fzf.bash
+
+## homebrew bash completion
+if [ -f $(brew --prefix)/etc/bash_completion ]; then
+. $(brew --prefix)/etc/bash_completion
+fi

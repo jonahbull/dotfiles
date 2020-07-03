@@ -1,0 +1,7 @@
+--cleared
+--exchange $
+--price-db /Users/jonahbull/Documents/Backup/ledger/prices.db
+--no-revalued
+--sort date
+--real
+--file /Users/jonahbull/Documents/Backup/ledger/my.ledger
