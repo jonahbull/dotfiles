@@ -2,6 +2,9 @@
 alias ll='ls -lh'
 alias la='ls -a'
 
+# replace cat with bat
+alias cat='bat'
+
 # color grep
 export GREP_COLOR=32
 alias grep='grep --color'
@@ -10,24 +13,6 @@ alias egrep='egrep --color'
 #aliases for standard git commands
 alias gl="git log --pretty=format:'%h %ad | %s%d [%an]' --stat --date=short -E"
 alias gs='git status'
-alias gsb='git status -sb'
-alias gd='git diff'
 alias gds='git diff --staged'
-alias gss='git show --stat'
-alias gb='git branch'
-alias gup='git pull --rebase origin'
 alias gpff='git pull --ff-only'
-alias gp='git push'
 alias gco='git checkout'
-alias gcp='git cherry-pick'
-alias gcpn='git cherry-pick -n'
-alias gcpx='git cherry-pick -x'
-
-#show only my commits
-alias my="git log --pretty=format:'%h %ad | %s%d [%an]' --stat --date=short -E --committer='jbull'"
-
-#start a simpleHTTPServer in current dir
-alias served='python -m SimpleHTTPServer'
-
-#misc
-alias reload='. ~/.bashrc'

@@ -1,50 +1,17 @@
-#Linux specific
+# Linux specific
 
-#aliases
+# fzf
+. /usr/share/fzf/key-bindings.bash
+. /usr/share/fzf/completion.bash
+
+# aliases
 alias ls='ls --color=auto'
+alias reload='. ~/.bashrc'
 
-alias update='sudo pacman -Syu && aurget -Syu'
-alias vpn='sudo vpnc summon'
-alias unvpn='sudo vpnc-disconnect'
-alias pw="tr -dc 'A-Za-z0-9!@#$%^&*' < /dev/urandom | fold -w 12 | head -n 1"
-alias xq='cd /home/jonah/sersol/Content.xquery/xquery-module/src-xml/xquery'
-alias td='cd /home/jonah/sersol/Content.testdata/testdata'
+# dircolors
+eval $(dircolors -b)
 
-# To hook up x301 to HDTV via DisplayPort
-alias hdtv='xrandr --output HDMI1 --mode 1440x900'
-alias unhdtv='xrandr --output HDMI1 --off'
-
-#config
-# add personal bin to path
-export PATH=$HOME/bin:$HOME/.cabal/bin:$PATH
-export BROWSER="chromium '%s' &"
-
-#cvs stuff
-export CVS_RSH=ssh
-
-#dircolors
-eval `dircolors -b`
-ulimit -c 20
-
-#functions
-##notes functions
-n() { $EDITOR ~/notes/"$*".txt ;}
-nls () { tree -CR --noreport ~/notes | awk '{ if ((NR > 1) gsub(/.txt/,"")); if (NF==1) print $1; else if (NF==2) print $2; else if (NF==3) printf " %s\n", $3 }' ;}
-
-##"convert" docx files
-function docx {
-    google docs upload "$1"
-    title=$(basename "$1" .docx)
-    google docs get --title "$title"
-    google docs delete --title "$title"
-}
-
-##"play" an album located in the current directory
-function play {
-mplayer -playlist <(find "$PWD" -type f -iname "*.mp3" -o -iname "*.ogg" | sort -n)
-}
-
-#ssh
+# ssh
 SSH_ENV="$HOME/.ssh/environment"
 
 function start_agent {
@@ -67,10 +34,7 @@ else
       start_agent;
 fi
 
-#PS1
-PS1="[\[\033[36;1m\]\u\[\033[37;1m\]@\[\033[33;1m\]\h:\[\033[33;1m\]\w\[\033[m\]]$ "
-
-#lightest dm evar!
+# lightest dm evar!
 if [[ -z "$DISPLAY" ]] && [[ $(tty) = /dev/tty1 ]]; then
     startx
     logout

@@ -19,7 +19,7 @@ set encoding=utf-8
 " Required for vundle
 filetype off
 " Enable fzf
-set rtp+=/usr/local/opt/fzf
+set rtp+=~/.vim/bundle/fzf.vim/
 set rtp+=~/.vim/bundle/Vundle.vim/
 call vundle#rc()
 

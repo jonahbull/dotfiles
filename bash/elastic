@@ -1,0 +1,127 @@
+# Completion
+
+## vault
+complete -C /usr/bin/vault vault
+
+# Various exports
+export RIPGREP_CONFIG_PATH=/home/jonahbull/.rg
+export VAULT_ADDR=https://secrets.elastic.co:8200
+export GPG_TTY=$(tty)
+export CLOUDSDK_PYTHON=$(which python2)
+
+# jjbb aliases
+alias jjbb='docker run --rm --network=host --env VAULT_TOKEN --env HOME=/$(basename $(pwd)) --volume $(pwd):/$(basename $(pwd)) --workdir /$(basename $(pwd)) docker.elastic.co/infra/jjbb'
+alias ljjbb='docker run --rm --network=host --env VAULT_TOKEN --env HOME=/$(basename $(pwd)) --volume $(pwd):/$(basename $(pwd)) --workdir /$(basename $(pwd)) jjbb'
+
+# Daily note function
+daily () {
+  today=$(date +'%Y-%m-%d')
+  note_dir="$HOME/doc/daily"
+  daily_file="${note_dir}/${today}.md"
+  if [[ -f "${daily_file}" ]]; then
+    vim -v "${daily_file}"
+  else
+    echo "# ${today}" > ${daily_file}
+    vim -v "${daily_file}"
+  fi
+}
+
+# AWS MFA setup functions
+aws_identity () {
+    aws --profile "$1" sts get-caller-identity --output text --query Arn | sed 's|:user/|:mfa/|'
+}
+
+aws_credentials () {
+    aws --profile "$1" sts get-session-token --serial-number $2 --token-code $3
+}
+
+awsmfa () {
+    echo "Fetching AWS identity."
+    ARN=$(aws_identity $1)
+    echo "Fetching AWS tokens."
+    CREDS=$(aws_credentials $1 $ARN $2)
+    echo "Exporting variables."
+    export AWS_PROFILE=$1
+    export AWS_ACCESS_KEY_ID=$(echo $CREDS | jq -r '.Credentials.AccessKeyId')
+    export AWS_SECRET_ACCESS_KEY=$(echo $CREDS | jq -r '.Credentials.SecretAccessKey')
+    export AWS_SESSION_TOKEN=$(echo $CREDS | jq -r '.Credentials.SessionToken')
+}
+
+op_signin () {
+    op list vaults >/dev/null 2>&1
+    NEED_LOGIN=$?
+    if ! [[ "$NEED_LOGIN" == "0" ]]; then
+        echo "Logging into 1Password."
+        OP_URL=$(cat $HOME/.op/config | jq --raw-output .accounts[0].url)
+        eval $(op signin $OP_URL)
+        echo ""
+    else
+        echo "Using cached 1Password login."
+    fi
+}
+
+opawsmfa () {
+    if [[ "" == "$(which op)" ]]; then
+        echo "1Password CLI doesn't appear to be installed."
+        echo "https://support.1password.com/command-line-getting-started/"
+        return 1
+    fi
+
+    if [[ ! -e $HOME/.op/config ]]; then
+        echo "1Password CLI doesn't appear to be configured.  Run `op signin --help` to set it up."
+        return 1
+    fi
+
+    op_signin
+    echo "Fetching MFA code from 1Password."
+    OP_TOKEN=$(op get totp "$1")
+    if [[ "" != "$OP_TOKEN" ]]; then
+        awsmfa "$2" "$OP_TOKEN"
+        echo "Done."
+    else
+        echo "Something went wrong fetching the token."
+    fi
+}
+
+mfa () {
+    if [ "$1" == "--help" ] || [ "$1" == "-h" ]; then
+        echo "USAGE: mfa [eng|prod|test]"
+        echo "The profile name is optional."
+        echo "By default the plain 'elastic' profile will be used."
+        echo
+        echo "Assumptions are that:"
+        echo " - Each profile is setup in ~/.aws/credentials"
+        echo " - The profile names in ~/.aws/credentials follow the"
+        echo "   pattern 'elastic[-profile_name]'"
+        echo " - Each profile has been added to 1Password"
+        echo " - The login names in 1Password follow the pattern"
+        echo "   'Elastic - AWS[ profile_name]'"
+        echo " - One-time passwords are setup in each"
+        echo
+        echo "For example:"
+        echo "~/.aws/credentials would have 'elastic-prod'"
+        echo "and 1Password would have 'Elastic - AWS prod'"
+        return 0
+    fi
+
+    ACCOUNT=$1
+    if [[ "eng" == "$1" ]]; then
+        ACCOUNT=""
+    fi
+
+    if [[ -z "$ACCOUNT" ]]; then
+        PROFILE="elastic"
+    else
+        PROFILE="elastic-$ACCOUNT"
+    fi
+
+    echo "Clearing previously set variables."
+    unset AWS_ACCESS_KEY_ID
+    unset AWS_SECRET_ACCESS_KEY
+    unset AWS_SESSION_TOKEN
+    unset AWS_ACCESS_KEY
+    unset AWS_SECRET_KEY
+    unset AWS_PROFILE
+
+    opawsmfa "AWS - $PROFILE" "$PROFILE"
+}

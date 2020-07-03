@@ -11,7 +11,11 @@ case "${os}" in
         ;;
     Linux)
         source $HOME/.bash/linux
+        source $HOME/.bash/elastic
         ;;
     *)
     ;;
 esac
+
+# starship prompt
+eval "$(starship init bash)"

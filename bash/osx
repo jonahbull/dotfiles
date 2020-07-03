@@ -3,6 +3,4 @@
 #aliases
 alias ls='ls -F -G'
 alias vim='mvim -v'
-alias stop_mpd='launchctl unload ~/Library/LaunchAgents/org.jbull.mpd.plist'
-alias start_mpd='launchctl load ~/Library/LaunchAgents/org.jbull.mpd.plist'
-alias restart_mpd='launchctl unload ~/Library/LaunchAgents/org.jbull.mpd.plist && launchctl load ~/Library/LaunchAgents/org.jbull.mpd.plist'
+alias reload='. ~/.profile'

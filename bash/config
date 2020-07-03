@@ -5,7 +5,7 @@ HISTSIZE=1000000
 HISTCONTROL=ignoreboth
 HISTIGNORE='ls:bg:fg:history'
 HISTTIMEFORMAT='%F %T '
-PROMPT_COMMAND='history -a; history -n'
+PROMPT_COMMAND='history -a; history -c;history -r'
 
 #directory options
 shopt -s cdspell
@@ -26,10 +26,41 @@ export LESS_TERMCAP_so=$'\E[01;44;33m'
 export LESS_TERMCAP_ue=$'\E[0m'
 export LESS_TERMCAP_us=$'\E[01;32m'
 
-#special vars for git_ps1
-export GIT_PS1_SHOWDIRTYSTATE=1
-export GIT_PS1_SHOWSTASHSTATE=1
-export GIT_PS1_SHOWUNTRACKEDFILES=1
-export GIT_PS1_SHOWCOLORHINTS=true
-export GIT_PS1_SHOWUPSTREAM=auto
-PROMPT_COMMAND='__git_ps1 "${VIRTUAL_ENV:+[\[\e[35m\]$(basename $VIRTUAL_ENV)\[\e[0m\]] }\[\e[34m\]\u\[\e[0m\] at \[\e[36m\]\h\[\e[0m\] in \[\e[33m\]\w\[\e[0m\]" "\n\[\e[31m\]\\$\[\e[0m\] " " on %s "'
+# fzf
+_gen_fzf_default_opts() {
+  local base03="234"
+  local base02="235"
+  local base01="240"
+  local base00="241"
+  local base0="244"
+  local base1="245"
+  local base2="254"
+  local base3="230"
+  local yellow="136"
+  local orange="166"
+  local red="160"
+  local magenta="125"
+  local violet="61"
+  local blue="33"
+  local cyan="37"
+  local green="64"
+
+  # Comment and uncomment below for the light theme.
+
+  # Solarized Dark color scheme for fzf
+  #export FZF_DEFAULT_OPTS="
+  #  --color fg:-1,bg:-1,hl:$blue,fg+:$base2,bg+:$base02,hl+:$blue
+  #  --color info:$yellow,prompt:$yellow,pointer:$base3,marker:$base3,spinner:$yellow
+  #"
+  # Solarized Light color scheme for fzf
+  export FZF_DEFAULT_OPTS="
+    --color fg:-1,bg:-1,hl:$blue,fg+:$base02,bg+:$base2,hl+:$blue
+    --color info:$yellow,prompt:$yellow,pointer:$base03,marker:$base03,spinner:$yellow
+  "
+}
+_gen_fzf_default_opts
+
+# fzf + rg configuration
+export FZF_DEFAULT_COMMAND="rg --files --no-ignore-vcs --hidden --follow --glob '!.git/*'"
+export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+export FZF_ALT_C_COMMAND="$FZF_DEFAULT_COMMAND"
