@@ -1,0 +1,10 @@
+[user]
+	name = Jonah Bull
+	email = jonah.bull@elastic.co
+	signingkey = A8D60E9211ED34FF
+[color]
+	ui = auto
+[push]
+	default = nothing
+[commit]
+	gpgsign = true
