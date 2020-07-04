@@ -1,0 +1,18 @@
+add_newline = false
+
+[username]
+show_always = true
+
+[cmd_duration]
+disabled = true
+
+[hostname]
+ssh_only = false
+disabled = false
+
+[kubernetes]
+symbol = "⛵ "
+style = "dimmed green"
+disabled = false
+[kubernetes.context_aliases]
+"gke_elastic-apps-163815_us-central1-a_apps" = "elastic-apps"
