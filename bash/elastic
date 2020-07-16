@@ -1,3 +1,7 @@
+# Keychain
+
+eval $(keychain --eval --quiet --agents ssh,gpg id_rsa)
+
 # Completion
 
 ## vault
@@ -7,7 +11,6 @@ complete -C /usr/bin/vault vault
 export RIPGREP_CONFIG_PATH=/home/jonahbull/.rg
 export VAULT_ADDR=https://secrets.elastic.co:8200
 export GPG_TTY=$(tty)
-export CLOUDSDK_PYTHON=$(which python2)
 
 # jjbb aliases
 alias jjbb='docker run --rm --network=host --env VAULT_TOKEN --env HOME=/$(basename $(pwd)) --volume $(pwd):/$(basename $(pwd)) --workdir /$(basename $(pwd)) docker.elastic.co/infra/jjbb'

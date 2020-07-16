@@ -43,5 +43,8 @@ xinput --set-prop "SynPS/2 Synaptics TouchPad" "Device Enabled" 0
 # set a different accel profile
 xinput --set-prop "TPPS/2 ALPS TrackPoint" "Device Accel Profile" 3
 
+# start xscreensaver
+xscreensaver -no-splash &
+
 # start our WM
 exec spectrwm
