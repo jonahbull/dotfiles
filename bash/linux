@@ -5,7 +5,7 @@
 . /usr/share/fzf/completion.bash
 
 # aliases
-alias ls='ls --color=auto'
+alias ls='ls --color=auto --hyperlink=always'
 alias reload='. ~/.bashrc'
 
 # dircolors

@@ -18,12 +18,13 @@ xset -b
 xmodmap ~/.Xmodmap
 
 # set background
-xsetroot -solid "#eee8d5"
+# xsetroot -solid "#eee8d5"
+xsetroot -solid "#93a1a1"
 
 # get xresources
 xrdb -merge -cpp /usr/bin/cpp ~/.Xresources
 
-# kill the rat
+# hide the mouse
 unclutter -noevents -idle 1 &
 
 # set cursor
@@ -44,7 +45,18 @@ xinput --set-prop "SynPS/2 Synaptics TouchPad" "Device Enabled" 0
 xinput --set-prop "TPPS/2 ALPS TrackPoint" "Device Accel Profile" 3
 
 # start xscreensaver
-xscreensaver -no-splash &
+# xscreensaver -no-splash &
+
+# lxpolkit as a polkit-agent so 1password-cli works
+lxpolkit &
+
+xset s 300
+# Hunch: letting the display go to sleep/power off doesn't let the USB keyboard/mouse wake it up?
+# Action: disable DPMS and see what happens
+# Result: It works
+xset dpms 0 0 0
+xss-lock --transfer-sleep-lock ~/.config/i3lock/transfer-sleep-i3lock.sh &
 
 # start our WM
-exec spectrwm
+# exec spectrwm
+exec i3

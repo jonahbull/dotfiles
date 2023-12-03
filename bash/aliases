@@ -1,3 +1,15 @@
+# cat for images
+alias icat='kitty +kitten icat'
+
+# kubectl aliases
+alias k='kubectl'
+alias kga='kubectl get all'
+alias kgp='kubectl get pods'
+alias kgns='kubectl get ns'
+alias kdp='kubectl describe pod'
+alias kdelp='kubectl delete pod'
+alias ktail='kubectl logs --tail=10 --follow'
+
 # ls aliases
 alias ll='ls -lh'
 alias la='ls -a'
@@ -6,7 +18,8 @@ alias la='ls -a'
 alias cat='bat'
 
 # color grep
-export GREP_COLOR=32
+#export GREP_COLOR=mt-32
+export GREP_COLORS='mt=32'
 alias grep='grep --color'
 alias egrep='egrep --color'
 

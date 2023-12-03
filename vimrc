@@ -14,30 +14,38 @@ set directory=~/.vim/swp/
 " all utf-8 all the time
 set encoding=utf-8
 
-" Plugins
-" ------------------------------------
-" Required for vundle
-filetype off
-" Enable fzf
-set rtp+=~/.vim/bundle/fzf.vim/
-set rtp+=~/.vim/bundle/Vundle.vim/
-call vundle#rc()
+" The markdown plugin breaks opening links in markdown documents
+let g:polyglot_disabled = ['markdown']
 
-" let Vundle manage Vundle, required
-Plugin 'gmarik/vundle'
-
-Plugin 'altercation/vim-colors-solarized'
-Plugin 'w0rp/ale'
-Plugin 'itchyny/lightline.vim'
-Plugin 'maximbaz/lightline-ale'
-Plugin 'tpope/vim-repeat'
-Plugin 'tpope/vim-surround'
-Plugin 'tpope/vim-fugitive'
-Plugin 'junegunn/fzf.vim'
-Plugin 'sheerun/vim-polyglot'
-Plugin 'tpope/vim-commentary'
-Plugin 'psf/black'
-Plugin 'ledger/vim-ledger'
+" I got the plug
+call plug#begin()
+Plug 'altercation/vim-colors-solarized'
+Plug 'w0rp/ale'
+Plug 'itchyny/lightline.vim'
+Plug 'maximbaz/lightline-ale'
+Plug 'tpope/vim-repeat'
+Plug 'tpope/vim-surround'
+Plug 'tpope/vim-fugitive'
+Plug 'tpope/vim-rhubarb'
+"Plug 'tpope/vim-markdown'
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'junegunn/fzf.vim'
+Plug 'sheerun/vim-polyglot'
+Plug 'tpope/vim-commentary'
+Plug 'ledger/vim-ledger'
+Plug 'fatih/vim-go', { 'do': ':GoInstallBinaries' }
+Plug 'airblade/vim-gitgutter'
+Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'} 
+Plug 'neovim/nvim-lspconfig'
+Plug 'psf/black'
+Plug 'hrsh7th/cmp-nvim-lsp'
+Plug 'hrsh7th/cmp-buffer'
+Plug 'hrsh7th/cmp-path'
+Plug 'hrsh7th/cmp-cmdline'
+Plug 'hrsh7th/nvim-cmp'
+Plug 'hrsh7th/cmp-vsnip'
+Plug 'hrsh7th/vim-vsnip'
+call plug#end()
 
 let g:lightline = {
       \ 'colorscheme': 'solarized',
@@ -58,22 +66,40 @@ let g:lightline.component_type = {
       \ }
 
 let g:lightline.active = { 'right': [['lineinfo', 'percent', 'fileformat', 'fileencoding', 'filetype', 'linter_ok', 'linter_checking', 'linter_errors', 'linter_warnings']] }
-
+let g:ale_linters = {}
+let g:ale_linters.python =['ruff']
+let g:ale_linters.hcl =['terraform', 'tflint']
+let g:ale_linters.terraform = ['terraform', 'tflint']
+let g:ale_linters.tf = ['terraform', 'tflint']
+"let g:ale_linters.yaml = ['yamlls', 'yamllint']
+let g:ale_fixers = {}
+let g:ale_fixers.terraform = ['terraform']
+let g:ale_fixers.tf = ['terraform']
+let g:ale_fixers.hcl = ['terraform']
+let g:ale_fixers.python = ['black', 'ruff']
+" These are installed with pipx
+let g:ale_python_flake8_use_global = '1'
 let g:ale_python_flake8_options = '--ignore="W391" --max-line-length=88'
-let g:ale_yaml_yamllint_options = '{extends: default,rules: {line-length: disable, indentation: {indent-sequences: consistent}}}'
+let g:ale_python_black_use_global = '1'
+let g:ale_python_ruff_use_global = '1'
+let g:ale_lint_on_enter = 0
+let g:ale_yaml_yamllint_options = '-d "{extends: default,rules: {line-length: disable, indentation: {indent-sequences: consistent}}}"'
 
-filetype plugin indent on " load file type plugins + indentation
+
+"filetype plugin indent on " load file type plugins + indentation
 
 " Colors and fonts
 " ------------------------------------
 
 " enable syntax highlighting
-syntax enable
-syntax on
+"syntax enable
+"syntax on
 
 set background=light
 colorscheme solarized
 let g:solarized_visibility="low"
+highlight clear SignColumn
+" set signcolumn=number
 
 " User interface
 " ------------------------------------
@@ -82,7 +108,7 @@ let g:solarized_visibility="low"
 set autochdir
 
 " easiest for interacting with system clipboard
-set clipboard=unnamed
+set clipboard=unnamedplus
 
 " basics
 set number " line numbers
@@ -133,6 +159,8 @@ set comments=://,b:#,:%,:XCOMM,n:>,fb:-,fb:*
 
 " Enable markdown folding
 let g:markdown_folding = 1
+"let g:markdown_fenced_languages = ['python', 'bash=sh', 'yaml', 'graphql']
+"let g:markdown_minlines = 200
 
 " Change default format options:
 set formatoptions-=t  " turn off auto-wrapping type
@@ -147,6 +175,10 @@ nnoremap <silent> <CR> :noh<CR>
 
 " Ctrl+P fuzzy file finding
 noremap <C-p> :Files<Cr>
+
+" For YAML
+autocmd FileType yaml setlocal ts=2 sts=2 sw=2 expandtab
+autocmd FileType helm setlocal ts=2 sts=2 sw=2 expandtab
 
 " For ledger
 au BufNewFile,BufRead *.ldg,*.ledger setf ledger | comp ledger

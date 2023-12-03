@@ -1,6 +1,12 @@
+# add $GOPATH to PATH
+export PATH="$PATH:$HOME/go/bin"
+# add $HOME/.cargo/bin to PATH
+export PATH="$PATH:$HOME/.cargo/bin"
+
 # history options
 shopt -s histappend
 shopt -s cmdhist
+HISTFILESIZE=1000000
 HISTSIZE=1000000
 HISTCONTROL=ignoreboth
 HISTIGNORE='ls:bg:fg:history'
