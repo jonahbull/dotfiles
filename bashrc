@@ -19,3 +19,4 @@ esac
 
 # starship prompt
 eval "$(starship init bash)"
+source "$HOME/.cargo/env"

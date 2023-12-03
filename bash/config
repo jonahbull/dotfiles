@@ -32,6 +32,9 @@ export LESS_TERMCAP_so=$'\E[01;44;33m'
 export LESS_TERMCAP_ue=$'\E[0m'
 export LESS_TERMCAP_us=$'\E[01;32m'
 
+# rg
+export RIPGREP_CONFIG_PATH=$HOME/.rg
+
 # fzf
 _gen_fzf_default_opts() {
   local base03="234"
@@ -67,6 +70,6 @@ _gen_fzf_default_opts() {
 _gen_fzf_default_opts
 
 # fzf + rg configuration
-export FZF_DEFAULT_COMMAND="rg --files --no-ignore-vcs --hidden --follow --glob '!.git/*'"
+export FZF_DEFAULT_COMMAND="rg --files --no-ignore-vcs --hidden"
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 export FZF_ALT_C_COMMAND="$FZF_DEFAULT_COMMAND"

@@ -32,3 +32,9 @@ alias gs='git status'
 
 # show only my commits
 alias my="git log --pretty=format:'%h %ad | %s%d [%an]' --stat --date=short -E --committer='Jonah Bull'"
+
+# ledger aliases
+alias balance_sheet='ledger balance --collapse assets and not etrade and not federal and not elastic liabilities:.*mortgage'
+alias college='ledger balance --flat assets.*529'
+alias retirement='ledger balance --flat assets:vanguard and not 529 assets:ascensus assets:adp assets:fidelity assets:optumbank assets:tiaa assets:mutualofamerica'
+alias asset_allocation='ledger balance assetallocation --percent'

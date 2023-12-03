@@ -38,6 +38,23 @@ Plug 'airblade/vim-gitgutter'
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'} 
 Plug 'neovim/nvim-lspconfig'
 Plug 'psf/black'
+
+" Disable polyglot for markdown
+let g:polyglot_disabled = ['markdown']
+
+" kitty-specific strikethrough/undercurl settings
+if &term =~ 'xterm\|kitty\|alacritty\|tmux'
+    let &t_Ts = "\e[9m"   " Strikethrough
+    let &t_Te = "\e[29m"
+    let &t_Cs = "\e[4:3m" " Undercurl
+    let &t_Ce = "\e[4:0m"
+endif
+
+" I got the plug
+call plug#begin()
+Plug 'altercation/vim-colors-solarized'
+Plug 'dense-analysis/ale'
+Plug 'fatih/vim-go', { 'do': ':GoInstallBinaries' }
 Plug 'hrsh7th/cmp-nvim-lsp'
 Plug 'hrsh7th/cmp-buffer'
 Plug 'hrsh7th/cmp-path'
@@ -45,6 +62,19 @@ Plug 'hrsh7th/cmp-cmdline'
 Plug 'hrsh7th/nvim-cmp'
 Plug 'hrsh7th/cmp-vsnip'
 Plug 'hrsh7th/vim-vsnip'
+Plug 'itchyny/lightline.vim'
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'junegunn/fzf.vim'
+Plug 'ledger/vim-ledger'
+Plug 'lervag/vimtex'
+Plug 'maximbaz/lightline-ale'
+Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+Plug 'neovim/nvim-lspconfig'
+Plug 'sheerun/vim-polyglot'
+Plug 'tpope/vim-commentary'
+Plug 'tpope/vim-repeat'
+Plug 'tpope/vim-surround'
+Plug 'tpope/vim-fugitive'
 call plug#end()
 
 let g:lightline = {
@@ -84,6 +114,9 @@ let g:ale_python_black_use_global = '1'
 let g:ale_python_ruff_use_global = '1'
 let g:ale_lint_on_enter = 0
 let g:ale_yaml_yamllint_options = '-d "{extends: default,rules: {line-length: disable, indentation: {indent-sequences: consistent}}}"'
+let g:ale_linters.go =['staticcheck']
+let g:ale_python_black_use_global = '1'
+let g:ale_python_ruff_use_global = '1'
 
 
 "filetype plugin indent on " load file type plugins + indentation
@@ -157,10 +190,11 @@ set nowrap " don't wrap lines
 " Indent bulleted lists properly
 set comments=://,b:#,:%,:XCOMM,n:>,fb:-,fb:*
 
-" Enable markdown folding
+" Markdown handling
 let g:markdown_folding = 1
 "let g:markdown_fenced_languages = ['python', 'bash=sh', 'yaml', 'graphql']
 "let g:markdown_minlines = 200
+"let g:markdown_fenced_languages = ['python', 'bash=sh']
 
 " Change default format options:
 set formatoptions-=t  " turn off auto-wrapping type
@@ -185,7 +219,16 @@ au BufNewFile,BufRead *.ldg,*.ledger setf ledger | comp ledger
 let g:ledger_maxwidth = 120
 let g:ledger_fold_blanks = 1
 function LedgerSort()
-    :%! ledger -f - print --sort 'date, amount'
+    :%! ledger -f - print --args-only --sort 'date, amount'
     :%LedgerAlign
 endfunction
 command LedgerSort call LedgerSort()
+
+" vim-tex
+let g:vimtex_compiler_engine = 'lualatex'
+
+augroup PythonRuffFixer
+  autocmd!
+  autocmd User ALEFixPre  let b:ale_python_ruff_options = '--select=I'
+  autocmd User ALEFixPost let b:ale_python_ruff_options = ''
+augroup END
